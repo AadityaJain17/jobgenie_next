@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import NavigationMenu from "@/components/ui/NavigationMenu";
+import CustomNavigationMenu from "@/components/CustomNavigationMenu";
 import localFont from "next/font/local";
 import "./globals.css";
 
@@ -21,7 +21,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+
+      <body className="dark min-h-screen min-w-screen">
+        <CustomNavigationMenu/>
+        {children}</body>
     </html>
   );
 }
+

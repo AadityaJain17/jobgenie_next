@@ -1,44 +1,50 @@
-import { Switch } from "@radix-ui/react-switch";
-import { Input } from "@/components/ui/input";
-import { Menubar, MenubarMenu, MenubarTrigger } from "@/components/ui/menubar";
-import Link from "next/link";
+import { FileText, Laptop, Users, Search } from "lucide-react";
 
-export default function Home() {
+export default function JobGenie() {
+  const features = [
+    {
+      icon: <FileText className="w-12 h-12 text-blue-500" />,
+      title: "ATS Resume Checker",
+      description: "Optimize your resume for ATS systems",
+    },
+    {
+      icon: <Laptop className="w-12 h-12 text-blue-500" />,
+      title: "Technical Interview",
+      description: "Practice technical interviews with AI",
+    },
+    {
+      icon: <Users className="w-12 h-12 text-blue-500" />,
+      title: "Behavioral Interview",
+      description: "Master behavioral questions",
+    },
+    {
+      icon: <Search className="w-12 h-12 text-blue-500" />,
+      title: "Job Search",
+      description: "Find your next opportunity",
+    },
+  ];
+
   return (
-    <main>
-      <Menubar>
-        <MenubarMenu>
-          <Link href="/" passHref legacyBehavior>
-            <MenubarTrigger>Home</MenubarTrigger>
-          </Link>
-        </MenubarMenu>
-        <MenubarMenu>
-          <Link href="/technical-interview" passHref legacyBehavior>
-            <MenubarTrigger>Technical Interview</MenubarTrigger>
-          </Link>
-        </MenubarMenu>
-        <MenubarMenu>
-          <Link href="/behavioral-interview" passHref legacyBehavior>
-            <MenubarTrigger>Behavioral Interview</MenubarTrigger>
-          </Link>
-        </MenubarMenu>
-        <MenubarMenu>
-          <Link href="/ats-score" passHref legacyBehavior>
-            <MenubarTrigger>ATS Score Check</MenubarTrigger>
-          </Link>
-        </MenubarMenu>
-        <MenubarMenu>
-          <Link href="/job-search" passHref legacyBehavior>
-            <MenubarTrigger>Job Search</MenubarTrigger>
-          </Link>
-        </MenubarMenu>
-      </Menubar>
-      <div>
-        <Input />
+    <div className="min-h-screen flex flex-col items-center justify-center p-4">
+      <h1 className="text-4xl font-bold mb-2 text-center">
+        Welcome to JobGenie
+      </h1>
+      <p className="text-xl mb-12 text-center text-gray-500">
+        Your AI-powered career assistant
+      </p>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-6xl w-full">
+        {features.map((feature, index) => (
+          <div
+            key={index}
+            className="flex flex-col items-center text-center bg-slate-800 rounded-lg shadow p-6"
+          >
+            <div className="mb-4">{feature.icon}</div>
+            <h2 className="text-xl font-semibold mb-2">{feature.title}</h2>
+            <p className="text-gray-500">{feature.description}</p>
+          </div>
+        ))}
       </div>
-      <div>
-        <Switch>HI</Switch>
-      </div>
-    </main>
+    </div>
   );
 }
