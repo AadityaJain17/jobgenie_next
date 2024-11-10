@@ -100,15 +100,16 @@ def chat_interview():
         context = data.get('context', [])
         
         prompt = f"""
-        You are an expert technical interviewer for a {position} position.
+        You are a technical interviewer for a {position} role. Continue the interview based on the following:
+
         Previous conversation: {context}
-        Candidate Name:{data['name']}
-        Candidate's message: {data['message']}
-        
-        Respond as the interviewer. If this is the start of the interview, greet the candidate
-        and ask your first technical question. If this is a response to a question, evaluate
-        the answer and ask the next question. 
+        Candidate Name: {data['name']}
+        Candidate's response: {data['message']}
+
+        If this is the first message, greet the candidate and ask an initial technical question.
+        Otherwise, evaluate the response and proceed with the next question.
         """
+
 
         print(prompt)
         response = get_gemini_response(prompt)
@@ -129,15 +130,16 @@ def chat_behavioral():
         context = data.get('context', [])
         
         prompt = f"""
-        You are an HR interviewer conducting a behavioral interview for a {position} position.
+        You are an HR interviewer for a {position} position. Continue a behavioral interview with the candidate.
+
         Previous conversation: {context}
-        Candidate Name:{data['name']}
-        Candidate's message: {data['message']}
-        
-        Respond as the HR interviewer. If this is the start of the interview, greet the candidate
-        and ask your first behavioral question. If this is a response to a question, evaluate
-        the answer and ask the next question.
+        Candidate Name: {data['name']}
+        Candidate's response: {data['message']}
+
+        If this is the first message, greet the candidate and start with a behavioral question.
+        Otherwise, evaluate the response and ask the next question.
         """
+
         
         response = get_gemini_response(prompt)
         return jsonify({'response': response})
