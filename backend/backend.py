@@ -9,6 +9,7 @@ from flask_cors import CORS , cross_origin # Add CORS support for cross-origin r
 import logging
 
 
+
 # Set up logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)

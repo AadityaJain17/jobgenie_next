@@ -5,23 +5,20 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent } from "@/components/ui/card";
 import { Upload } from "lucide-react";
-import { json } from "stream/consumers";
 
 const API_URL = "http://localhost:8080/api";
 
-interface atsResponse{
- jd:string,
- missing:string[],
- profile:string,
+interface ATSResponse {
+  jd: string;
+  missing: string[];
+  profile: string;
 }
 
-
-export default function ATSResumeChecker() {
+export default function Component() {
   const [jobDescription, setJobDescription] = useState("");
   const [file, setFile] = useState<File | null>(null);
-  const [message, setMessage] = useState("");
-  const [response,setResponse] = useState<atsResponse|null>(null)
- 
+  const [response, setResponse] = useState<ATSResponse | null>(null);
+
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {
       setFile(event.target.files[0]);
@@ -40,42 +37,44 @@ export default function ATSResumeChecker() {
   };
 
   const handleAnalyze = async () => {
-    if (file!=null){
+    if (file != null) {
       const data = new FormData();
       data.append("resume", file);
-      data.append("jd",jobDescription)
-       const response = await fetch(`${API_URL}/ats/analyze`, {
-         method: "POST",
-         body: data
-       });
+      data.append("jd", jobDescription);
+      const response = await fetch(`${API_URL}/ats/analyze`, {
+        method: "POST",
+        body: data,
+      });
 
-       const res = await response.json();
-       if ((res.analysis as string).startsWith("```json") || (res.analysis as string).startsWith("```JSON")){
-        const analysis = JSON.parse(res.analysis.slice("```json".length, res.analysis.length - 3)) 
-        setResponse({
-          jd:analysis["JD Match"],
-          missing:analysis["Missing Keywords"],
-          profile:analysis["Profile Summary"]
-        })
-        
-      }
-      else{
+      const res = await response.json();
+      if (
+        (res.analysis as string).startsWith("```json") ||
+        (res.analysis as string).startsWith("```JSON")
+      ) {
         const analysis = JSON.parse(
-          res.analysis
+          res.analysis.slice("```json".length, res.analysis.length - 3)
         );
         setResponse({
           jd: analysis["JD Match"],
           missing: analysis["Missing Keywords"],
           profile: analysis["Profile Summary"],
         });
+      } else {
+        const analysis = JSON.parse(res.analysis);
+        setResponse({
+          jd: analysis["JD Match"],
+          missing: analysis["Missing Keywords"],
+          profile: analysis["Profile Summary"],
+        });
       }
-
     }
   };
 
   return (
     <div className="min-h-screen p-6">
-      <h1 className="text-2xl text-center font-bold mb-6">ATS Resume Checker</h1>
+      <h1 className="text-2xl text-center font-bold mb-6">
+        ATS Resume Checker
+      </h1>
       <Card className="bg-gray-800 border-gray-700">
         <CardContent className="p-6">
           <div className="mb-6">
@@ -131,13 +130,34 @@ export default function ATSResumeChecker() {
         </CardContent>
       </Card>
       {response && (
-        <div
-        
-          className="p-4 bg-slate-800 m-2 rounded-lg shadow-md mb-4 hover:shadow-lg transition-shadow"
-        >
-          <p className="text-lg font-semibold">{response.jd}</p>
-          <p className="text-gray-600">{response.missing.map(m=> <span className="space-x-2">{m}</span>)}</p>
-          <p className="text-gray-500">{response.profile}</p>
+        <div className="mt-6 space-y-6 p-6 bg-gray-800 rounded-lg shadow-lg">
+          <div className="space-y-1">
+            <h2 className="text-xl font-semibold text-white">
+              Match Percentage
+            </h2>
+            <p className="text-5xl text-green-400">{response.jd}</p>
+          </div>
+          <div className="space-y-1">
+            <h2 className="text-xl font-semibold text-white">
+              Missing Keywords
+            </h2>
+            <div className="flex flex-wrap gap-2">
+              {response.missing.map((keyword, index) => (
+                <span
+                  key={index}
+                  className="px-3 py-1 bg-gray-700 rounded-full text-sm"
+                >
+                  {keyword}
+                </span>
+              ))}
+            </div>
+          </div>
+          <div className="space-y-1">
+            <h2 className="text-xl font-semibold text-white">
+              Profile Summary
+            </h2>
+            <p className="text-gray-300">{response.profile}</p>
+          </div>
         </div>
       )}
     </div>
