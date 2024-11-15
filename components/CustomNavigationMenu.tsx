@@ -18,7 +18,7 @@ export default function CustomNavigationMenu() {
           {" "}
           {/* Space between items */}
           {[
-            { href: "/", label: "HOME" },
+            { href: "/", label: "Home" },
             { href: "/ats-score", label: "ATS Resume Checker" },
             { href: "/technical-interview", label: "Technical Interview" },
             { href: "/behavioral-interview", label: "Behavioral Interview" },
